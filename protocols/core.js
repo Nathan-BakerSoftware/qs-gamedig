@@ -264,9 +264,6 @@ export default class Core extends EventEmitter {
     const socket = this.udpSocket
     await socket.send(buffer, address, port, this.options.debug)
 
-    this.logger.debug('udpSend: onPacket: ', onPacket)
-    this.logger.debug('udpSend: onTimeout: ', onTimeout)
-
     if (!onPacket && !onTimeout) {
       this.logger.debug('udpSend: returning null')
       return null
@@ -295,7 +292,7 @@ export default class Core extends EventEmitter {
       })
       timeout = Promises.createTimeout(socketTimeout, 'UDP')
       const wrappedTimeout = Promise.resolve(timeout).catch((e) => {
-        this.logger.debug('UDP timeout detected')
+        this.logger.debug('UDP timeout detected', e)
         if (onTimeout) {
           const result = onTimeout()
           if (result !== undefined) {
