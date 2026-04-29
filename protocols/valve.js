@@ -58,6 +58,8 @@ export default class valve extends Core {
 
     const reader = this.reader(b)
 
+    this.logger.debug('INFO: ', reader.string())
+
     if (this.goldsrcInfo) state.raw.address = reader.string()
     else state.raw.protocol = reader.uint(1)
 
@@ -364,6 +366,8 @@ export default class valve extends Core {
     const challengeAtBeginning = type === 0x55 || type === 0x56
     const challengeAtEnd = type === 0x54 && !!this._challenge
 
+    this.logger.debug('sendPacketRaw: type: ', type, '\npayload: ', payload)
+
     if (typeof payload === 'string') payload = Buffer.from(payload, 'binary')
 
     const b = Buffer.alloc(4 +
@@ -376,6 +380,7 @@ export default class valve extends Core {
 
     let challenge = this._challenge
     if (!challenge) challenge = 0xffffffff
+    this.logger.debug('challenge: ', challenge)
 
     b.writeInt32LE(-1, offset)
     offset += 4

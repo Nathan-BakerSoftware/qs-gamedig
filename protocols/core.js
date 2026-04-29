@@ -264,7 +264,11 @@ export default class Core extends EventEmitter {
     const socket = this.udpSocket
     await socket.send(buffer, address, port, this.options.debug)
 
+    this.logger.debug('udpSend: onPacket: ', onPacket)
+    this.logger.debug('udpSend: onTimeout: ', onTimeout)
+
     if (!onPacket && !onTimeout) {
+      this.logger.debug('udpSend: returning null')
       return null
     }
 
